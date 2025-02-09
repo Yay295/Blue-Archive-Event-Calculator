@@ -418,9 +418,10 @@
 					data: events_table_data,
 					order: {idx: 1, dir: 'asc'},
 
+					layout: {topStart:'search',topEnd:null},
+
 					info: false,
-					paging: false,
-					searching: false
+					paging: false
 				});
 				events_table.addEventListener('click', event => {
 					try {
