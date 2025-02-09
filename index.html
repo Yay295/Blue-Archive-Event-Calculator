@@ -2,6 +2,7 @@
 <html>
 	<head>
 		<link href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css" rel="stylesheet">
+		<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 		<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js"></script>
 		<script>
 			const STANDARD_STAGE_COSTS = [10,10,10,10,15,15,15,15,20,20,20,20];
@@ -21,17 +22,33 @@
 			];
 			document.addEventListener('DOMContentLoaded', event => {
 				const events_section = document.getElementById('events');
-				for (let event of EVENTS) {
-					let div = document.createElement('div');
-					divinnerText = event.names['en'];
-					events_section.appendChild(div);
-				}
+				const events_section_table = events_section.querySelector('table');
+				events_section_table.classList.add('hover','stripe');
+				const events_table_data = EVENTS.map(e => [
+					e.names['en'],
+					e.releases['jp'],
+					e.releases['global']
+				]);
+				new DataTable(events_section_table, {
+					columns: [
+						{ title: 'Name' },
+						{ title: 'JP Release Date' },
+						{ title: 'Global Release Date' }
+					],
+					data: events_table_data,
+					order: {idx: 1, dir: 'asc'},
+
+					info: false,
+					paging: false,
+					searching: false
+				});
 			});
 		</script>
 	</head>
 	<body>
 		<section id="events">
 			<h2>Events</h2>
+			<table></table>
 		</section>
 	</body>
 </html>
