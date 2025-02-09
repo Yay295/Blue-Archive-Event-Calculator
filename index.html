@@ -288,11 +288,15 @@
 				const events_section = document.getElementById('events');
 				const events_section_table = events_section.querySelector('table');
 				events_section_table.classList.add('hover','stripe');
-				const events_table_data = EVENTS.map(e => [
-					e.names['en'],
-					e.releases['jp'],
-					e.releases['global'] || ''
-				]);
+				const events_table_data = EVENTS.map((e,i) => {
+					let row_data = [
+						e.names['en'],
+						e.releases['jp'],
+						e.releases['global'] || ''
+					];
+					row_data.DT_RowId = 'events_table_row_' + i;
+					return row_data;
+				});
 				new DataTable(events_section_table, {
 					columns: [
 						{ title: 'Name' },
