@@ -5,7 +5,23 @@
 		<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 		<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js"></script>
 		<script>
+			const ITEM_NAME_PLACEHOLDERS = 'ABCD';
 			const STANDARD_STAGE_COSTS = [10,10,10,10,15,15,15,15,20,20,20,20];
+
+			const STAGE_ITEM_AMOUNTS_1 = [
+				[10,3,3],
+				[0,13,3],
+				[0,3,13],
+				[16,0,0],
+				[16,4,4],
+				[0,20,4],
+				[0,4,20],
+				[24,0,0],
+				[24,4,4],
+				[4,28,0],
+				[4,0,28],
+				[32,0,0]
+			];
 
 			const EVENTS = [
 				{
@@ -182,7 +198,8 @@
 					},
 					releases: {'jp':'2023-08-23','global':'2024-02-27'},
 					items: ['Tarot del Luna','Ink Cartridge','Tablet Pen'],
-					stage_costs: STANDARD_STAGE_COSTS
+					stage_costs: STANDARD_STAGE_COSTS,
+					stage_item_amounts: STAGE_ITEM_AMOUNTS_1
 				}, {
 					names: {
 						'en': 'Trip-Trap-Train'
@@ -224,7 +241,8 @@
 					},
 					releases: {'jp':'2024-03-27','global':'2024-09-24'},
 					items: ['Hyakkiyako Commemorative Card','Field Trip Itenerary','Guide Flag'],
-					stage_costs: STANDARD_STAGE_COSTS
+					stage_costs: STANDARD_STAGE_COSTS,
+					stage_item_amounts: STAGE_ITEM_AMOUNTS_1
 				}, {
 					names: {
 						'en': '-ive aLIVE!'
@@ -286,14 +304,97 @@
 
 			function loadEventData(index) {
 				const data = EVENTS[index];
+
 				if (data) {
 					console.log('Loading data for event "' + data.names['en'] + '".');
 				} else {
 					console.error('Event index ' + index + ' is not valid.');
-					return;
+					return false;
 				}
+
+				if (data.stage_costs.length !== data.stage_item_amounts.length) {
+					console.error('The amount of data for this event does not match.\nStage Costs:', data.stage_costs.length, '\nStage Items:', data.stage_item_amounts.length);
+					return false;
+				}
+
+				const num_stage_items = data.items.length;
+
+				if (!data.stage_item_amounts.every(amounts => amounts.length === num_stage_items)) {
+					console.error('This stage has ' + num_stage_items + ' items, but the amount of item amounts does not match.');
+					return false;
+				}
+
+				const total_values = Array(num_stage_items+1).fill(0);
+
+				function calculateDatatableBonusAmount(row,type,val,meta) {
+					if (type === 'type') return 0;
+					return row[meta.col] = Math.ceil(row[meta.col-num_stage_items*2] * row[meta.col-num_stage_items] / 100);
+				}
+
+				function calculateDatatableTotalAmount(row,type,val,meta) {
+					if (type === 'type') return 0;
+					return row[meta.col] = (row[meta.col-num_stage_items*3] + row[meta.col-num_stage_items]);
+				}
+
+				function calculateDatatableSum(row,type,val,meta) {
+					if (type === 'type') return 0;
+					let sum = 0;
+					for (let i = 1; i <= num_stage_items; ++i) {
+						sum += row[meta.col-i];
+					}
+					return row[meta.col] = sum;
+				}
+
+				function calculateDatatableTotalPerAP(row,type,val,meta) {
+					if (type === 'type') return 0;
+					return (row[meta.col] = (row[meta.col-(num_stage_items+1)] / row[1])).toFixed(2);
+				}
+
+				const event_table_data = data.stage_costs.map((ap_cost,stage_index) => {
+					const stage_item_amounts = data.stage_item_amounts[stage_index];
+					// TODO reload saved bonus multipliers
+					const bonus_multipliers = Array(num_stage_items).fill(0);
+					return [
+						stage_index+1,
+						ap_cost,
+						...stage_item_amounts,
+						...bonus_multipliers
+					];
+				});
+
 				const event_data_title = document.getElementById('event_data_title');
+				event_data_title.innerText = data.names['en'];
 				const event_data_table = document.getElementById('event_data');
+				new DataTable(event_data_table, {
+					columns: [
+						{ title: 'Stage' },
+						{ title: 'AP Cost' },
+						...data.items.map((item,index) => { return {title: 'Item '+ITEM_NAME_PLACEHOLDERS[index]}; }),
+						...data.items.map((item,index) => { return {title: 'Multiplier '+ITEM_NAME_PLACEHOLDERS[index]}; }),
+						...data.items.map((item,index) => { return {
+							title: 'Bonus ' + ITEM_NAME_PLACEHOLDERS[index],
+							data: calculateDatatableBonusAmount
+						}; }),
+						...data.items.map((item,index) => { return {
+							title: 'Total ' + ITEM_NAME_PLACEHOLDERS[index],
+							data: calculateDatatableTotalAmount
+						}; }),
+						{ title: 'Sum', data: calculateDatatableSum },
+						...data.items.map((item,index) => { return {
+							title: 'Total '+ITEM_NAME_PLACEHOLDERS[index]+' / AP',
+							data: calculateDatatableTotalPerAP
+						}; }),
+						{ title: 'Total / AP', data: calculateDatatableTotalPerAP }
+					],
+					data: event_table_data,
+
+					destroy: true,
+					info: false,
+					paging: false,
+					searching: false
+				});
+
+				return true;
 			}
 
 			document.addEventListener('DOMContentLoaded', event => {
