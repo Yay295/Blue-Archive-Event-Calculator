@@ -284,10 +284,21 @@
 				}
 			];
 
+			function loadEventData(index) {
+				const data = EVENTS[index];
+				if (data) {
+					console.log('Loading data for event "' + data.names['en'] + '".');
+				} else {
+					console.error('Event index ' + index + ' is not valid.');
+					return;
+				}
+				const event_data_title = document.getElementById('event_data_title');
+				const event_data_table = document.getElementById('event_data');
+			}
+
 			document.addEventListener('DOMContentLoaded', event => {
-				const events_section = document.getElementById('events');
-				const events_section_table = events_section.querySelector('table');
-				events_section_table.classList.add('hover','stripe');
+				const events_table = document.getElementById('events');
+				events_table.classList.add('hover','stripe');
 				const events_table_data = EVENTS.map((e,i) => {
 					let row_data = [
 						e.names['en'],
@@ -297,7 +308,7 @@
 					row_data.DT_RowId = 'events_table_row_' + i;
 					return row_data;
 				});
-				new DataTable(events_section_table, {
+				new DataTable(events_table, {
 					columns: [
 						{ title: 'Name' },
 						{ title: 'JP Release Date' },
@@ -310,13 +321,26 @@
 					paging: false,
 					searching: false
 				});
+				events_table.addEventListener('click', event => {
+					try {
+						const row = event.target.closest('tr');
+						const index = parseInt(row.id.split('_')[3],10);
+						loadEventData(index);
+					} catch (error) {
+						console.error(error);
+					}
+				});
 			});
 		</script>
 	</head>
 	<body>
-		<section id="events">
+		<section>
 			<h2>Events</h2>
-			<table></table>
+			<table id="events"></table>
+		</section>
+		<section>
+			<h2 id="event_data_title"></h2>
+			<table id="event_data"></table>
 		</section>
 	</body>
 </html>
