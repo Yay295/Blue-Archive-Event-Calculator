@@ -3,8 +3,35 @@
 	<head>
 		<link href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css" rel="stylesheet">
 		<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js"></script>
+		<script>
+			const STANDARD_STAGE_COSTS = [10,10,10,10,15,15,15,15,20,20,20,20];
+			const EVENTS = [
+				{
+					names: {'en':'Cherry Blossom Festival Commotion!'},
+					releases: {'jp':'2021-02-25','global':'2021-11-29'},
+					items: [],
+					stage_costs: STANDARD_STAGE_COSTS
+				},
+				{
+					names: {'en':'Alabaster Calling Card: Mansion Masquerade and the Essence of Beauty'},
+					releases: {'jp':'2023-04-26','global':'2023-10-31'},
+					items: ['Immaculate Maid Hairband','Makeup Palette','Old Mansion Invitation'],
+					stage_costs: STANDARD_STAGE_COSTS
+				},
+			];
+			document.addEventListener('DOMContentLoaded', event => {
+				const events_section = document.getElementById('events');
+				for (let event of EVENTS) {
+					let div = document.createElement('div');
+					divinnerText = event.names['en'];
+					events_section.appendChild(div);
+				}
+			});
+		</script>
 	</head>
 	<body>
-		test
+		<section id="events">
+			<h2>Events</h2>
+		</section>
 	</body>
 </html>
