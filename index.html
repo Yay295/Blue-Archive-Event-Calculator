@@ -350,7 +350,7 @@
 						const col_data = col_cells.map(c => [c.getValue(),c.getElement()]);
 						const max_value = col_data.reduce((max,curr_data) => Math.max(max,curr_data[0]), 0);
 						for (let cell_data of col_data) {
-							cell_data[1].style.backgroundColor = cell_data[0] === max_value ? 'green' : null;
+							cell_data[1].style.backgroundColor = cell_data[0] === max_value ? 'lightgreen' : null;
 						}
 					}
 					return cell.getValue().toFixed(2);
