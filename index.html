@@ -16,6 +16,7 @@
 		</style>
 		<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 		<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js"></script>
+		<script src="https://cdn.datatables.net/plug-ins/2.2.2/sorting/custom-data-source/dom-text-numeric.js"></script>
 		<script>
 			const ITEM_NAME_PLACEHOLDERS = 'ABCD';
 			const STANDARD_STAGE_COSTS = [10,10,10,10,15,15,15,15,20,20,20,20];
@@ -340,7 +341,7 @@
 
 				function calculateDatatableBonusAmount(row,type,val,meta) {
 					if (type === 'type') return 0;
-					return row[meta.col] = Math.ceil(row[meta.col-num_stage_items*2] * row[meta.col-num_stage_items] / 100);
+					return row[meta.col] = Math.ceil(row[meta.col-num_stage_items*2] * parseInt(row[meta.col-num_stage_items].value,10) / 100);
 				}
 
 				function calculateDatatableTotalAmount(row,type,val,meta) {
@@ -362,10 +363,19 @@
 					return row[meta.col] = (row[meta.col-(num_stage_items+1)] / row[1]);
 				}
 
+				function createBonusMultiplierInput(value) {
+					const input = document.createElement('input');
+					input.type = 'number';
+					input.value = value;
+					input.min = 0;
+					input.step = 5;
+					input.max = 100;
+					return input;
+				}
 				const event_table_data = data.stage_costs.map((ap_cost,stage_index) => {
 					const stage_item_amounts = data.stage_item_amounts[stage_index];
 					// TODO reload saved bonus multipliers
-					const bonus_multipliers = Array(num_stage_items).fill(0);
+					const bonus_multipliers = Array(num_stage_items).fill(0).map(createBonusMultiplierInput);
 					return [
 						stage_index+1,
 						ap_cost,
@@ -383,7 +393,7 @@
 						{ title: 'Stage' },
 						{ title: 'AP Cost' },
 						...data.items.map((item,index) => { return {title: 'Item '+ITEM_NAME_PLACEHOLDERS[index]}; }),
-						...data.items.map((item,index) => { return {title: 'Multiplier '+ITEM_NAME_PLACEHOLDERS[index]}; }),
+						...data.items.map((item,index) => { return {title: 'Multiplier '+ITEM_NAME_PLACEHOLDERS[index], type: 'dom-text-numeric'}; }),
 						...data.items.map((item,index) => { return {
 							title: 'Bonus ' + ITEM_NAME_PLACEHOLDERS[index],
 							data: calculateDatatableBonusAmount
