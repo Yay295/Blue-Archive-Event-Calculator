@@ -481,7 +481,7 @@
 						...data.items.map((item,index) => { return {field: 'item_amount_'+index, title: 'Item '+ITEM_NAME_PLACEHOLDERS[index]}; }),
 						...data.items.map((item,index) => { return {
 							field: 'bonus_multiplier_' + index,
-							title: 'Multiplier ' + ITEM_NAME_PLACEHOLDERS[index],
+							title: 'Bonus % ' + ITEM_NAME_PLACEHOLDERS[index],
 							editor: 'number',
 							editorParams: { min: 0, step: 5, max: 100, selectContents: true },
 							formatter: 'money',
