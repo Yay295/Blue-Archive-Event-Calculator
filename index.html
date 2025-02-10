@@ -1,8 +1,57 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<link href="https://unpkg.com/tabulator-tables@6.3.1/dist/css/tabulator.min.css" rel="stylesheet">
+		<link id="light_theme_stylesheet" href="https://unpkg.com/tabulator-tables@6.3.1/dist/css/tabulator.min.css" rel="stylesheet">
+		<link id="dark_theme_stylesheet" href="https://unpkg.com/tabulator-tables@6.3.1/dist/css/tabulator_midnight.min.css" rel="stylesheet" disabled>
+		<style>
+			html {
+				background-color: white;
+				color: black;
+			}
+			@media (prefers-color-scheme: dark) {
+				html {
+					background-color: black;
+					color: white;
+				}
+			}
+			body {
+				text-align: center;
+			}
+			.max-column-value {
+				background-color: lightgreen;
+			}
+			@media (prefers-color-scheme: dark) {
+				.max-column-value {
+					background-color: green;
+				}
+			}
+		</style>
 		<script type="text/javascript" src="https://unpkg.com/tabulator-tables@6.3.1/dist/js/tabulator.min.js"></script>
+		<script>
+			const prefers_color_scheme_media_query_list = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : {matches:false,addEventListener:event=>null};
+			const light_theme_stylesheet = document.getElementById('light_theme_stylesheet');
+			const dark_theme_stylesheet = document.getElementById('dark_theme_stylesheet');
+
+			function changeStyleTheme(theme) {
+				switch (theme) {
+					case 'dark':
+						light_theme_stylesheet.disabled = true;
+						dark_theme_stylesheet.disabled = false;
+						break;
+					case 'light':
+					default:
+						light_theme_stylesheet.disabled = false;
+						dark_theme_stylesheet.disabled = true;
+						break
+				}
+			}
+
+			function updateStyleTheme() {
+				changeStyleTheme(prefers_color_scheme_media_query_list.matches ? 'dark' : 'light');
+			}
+			prefers_color_scheme_media_query_list.addEventListener('change',updateStyleTheme);
+			updateStyleTheme();
+		</script>
 		<script>
 			const ITEM_NAME_PLACEHOLDERS = 'ABCD';
 			const STANDARD_STAGE_COSTS = [10,10,10,10,15,15,15,15,20,20,20,20];
@@ -353,7 +402,7 @@
 						const col_data = col_cells.map(c => [c.getValue(),c.getElement()]);
 						const max_value = col_data.reduce((max,curr_data) => Math.max(max,curr_data[0]), 0);
 						for (let cell_data of col_data) {
-							cell_data[1].style.backgroundColor = cell_data[0] === max_value ? 'lightgreen' : null;
+							cell_data[1].classList.toggle('max-column-value', cell_data[0] === max_value);
 						}
 					}
 					return cell.getValue().toFixed(2);
@@ -446,7 +495,7 @@
 			});
 		</script>
 	</head>
-	<body style="text-align:center">
+	<body>
 		<section>
 			<h2>Events</h2>
 			<table id="events"></table>
