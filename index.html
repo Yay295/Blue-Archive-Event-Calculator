@@ -341,6 +341,9 @@
 
 				const event_data_title = document.getElementById('event_data_title');
 				event_data_title.innerText = data.names['en'];
+				const event_data_subtitle = document.getElementById('event_data_subtitle');
+				event_data_subtitle.innerText = data.items.map((item,index) => item + ' = ' + ITEM_NAME_PLACEHOLDERS[index]).join(', ');
+
 				const event_data_table = document.getElementById('event_data');
 				function totalPerAPFormatter(cell,params) {
 					const col_cells = cell.getColumn().getCells();
@@ -450,6 +453,7 @@
 		</section>
 		<section>
 			<h2 id="event_data_title"></h2>
+			<p id="event_data_subtitle"></p>
 			<table id="event_data"></table>
 		</section>
 	</body>
