@@ -342,6 +342,19 @@
 				const event_data_title = document.getElementById('event_data_title');
 				event_data_title.innerText = data.names['en'];
 				const event_data_table = document.getElementById('event_data');
+				function totalPerAPFormatter(cell,params) {
+					const col_cells = cell.getColumn().getCells();
+					// The table loads row-by-row, so we have to wait for all rows to be loaded.
+					// Once all rows have been loaded we then need to set the style for every cell in this column.
+					if (col_cells.length === data.stage_costs.length) {
+						const col_data = col_cells.map(c => [c.getValue(),c.getElement()]);
+						const max_value = col_data.reduce((max,curr_data) => Math.max(max,curr_data[0]), 0);
+						for (let cell_data of col_data) {
+							cell_data[1].style.backgroundColor = cell_data[0] === max_value ? 'green' : null;
+						}
+					}
+					return cell.getValue().toFixed(2);
+				}
 				const table = new Tabulator(event_data_table, {
 					columns: [
 						{ field: 'stage', title: 'Stage' },
@@ -383,37 +396,18 @@
 						...data.items.map((item,index) => { return {
 							field: 'total_per_ap_' + index,
 							title: 'Total '+ITEM_NAME_PLACEHOLDERS[index] + ' / AP',
-							formatter: 'money',
+							formatter: totalPerAPFormatter,
 							mutator: (value,data) => data['total_'+index] / data['ap_cost']
 						}; }),
 						{
 							field: 'total_sum_per_ap',
 							title: 'Total / AP',
-							formatter: 'money',
+							formatter: totalPerAPFormatter,
 							mutator: (value,data) => data['sum'] / data['ap_cost']
 						}
 					],
 					columnDefaults: {resizable:false},
 					data: event_table_data,
-					/* TODO redo highlighting best total/ap column values
-					drawCallback: settings => {
-						document.querySelectorAll('.best_col_val').forEach(e => e.classList.remove('best_col_val'));
-						const num_cols = settings.api.init().columns.length;
-						const num_total_per_ap_cols = num_stage_items + 1;
-						for (let col_idx = num_cols - num_total_per_ap_cols; col_idx < num_cols; ++col_idx) {
-							const col = settings.api.column(col_idx);
-							const col_data = col.data().toArray();
-							const max_val = Math.max(...col_data);
-							if (max_val > 0) {
-								const nodes = col.nodes().toArray();
-								col_data.forEach((val,row_idx) => {
-									if (val === max_val) {
-										nodes[row_idx].classList.add('best_col_val');
-									}
-								});
-							}
-						}
-					},*/
 					layout: 'fitDataTable'
 				});
 
