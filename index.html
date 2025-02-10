@@ -2,6 +2,18 @@
 <html>
 	<head>
 		<link href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css" rel="stylesheet">
+		<style>
+			th {
+				padding: 2px !important;
+				padding-right: 26px !important;
+			}
+			#events {
+				cursor: pointer;
+			}
+			.best_col_val {
+				background-color: green;
+			}
+		</style>
 		<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 		<script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js"></script>
 		<script>
@@ -347,7 +359,7 @@
 
 				function calculateDatatableTotalPerAP(row,type,val,meta) {
 					if (type === 'type') return 0;
-					return (row[meta.col] = (row[meta.col-(num_stage_items+1)] / row[1])).toFixed(2);
+					return row[meta.col] = (row[meta.col-(num_stage_items+1)] / row[1]);
 				}
 
 				const event_table_data = data.stage_costs.map((ap_cost,stage_index) => {
@@ -365,6 +377,7 @@
 				const event_data_title = document.getElementById('event_data_title');
 				event_data_title.innerText = data.names['en'];
 				const event_data_table = document.getElementById('event_data');
+				event_data_table.classList.add('compact','hover','stripe');
 				new DataTable(event_data_table, {
 					columns: [
 						{ title: 'Stage' },
@@ -382,11 +395,30 @@
 						{ title: 'Sum', data: calculateDatatableSum },
 						...data.items.map((item,index) => { return {
 							title: 'Total '+ITEM_NAME_PLACEHOLDERS[index]+' / AP',
-							data: calculateDatatableTotalPerAP
+							data: calculateDatatableTotalPerAP,
+							render: DataTable.render.number(null,null,2)
 						}; }),
-						{ title: 'Total / AP', data: calculateDatatableTotalPerAP }
+						{ title: 'Total / AP', data: calculateDatatableTotalPerAP, render: DataTable.render.number(null,null,2) }
 					],
 					data: event_table_data,
+					drawCallback: settings => {
+						document.querySelectorAll('.best_col_val').forEach(e => e.classList.remove('best_col_val'));
+						const num_cols = settings.api.init().columns.length;
+						const num_total_per_ap_cols = num_stage_items + 1;
+						for (let col_idx = num_cols - num_total_per_ap_cols; col_idx < num_cols; ++col_idx) {
+							const col = settings.api.column(col_idx);
+							const col_data = col.data().toArray();
+							const max_val = Math.max(...col_data);
+							if (max_val > 0) {
+								const nodes = col.nodes().toArray();
+								col_data.forEach((val,row_idx) => {
+									if (val === max_val) {
+										nodes[row_idx].classList.add('best_col_val');
+									}
+								});
+							}
+						}
+					},
 
 					destroy: true,
 					info: false,
@@ -394,12 +426,14 @@
 					searching: false
 				});
 
+				document.body.children[1].scrollIntoView();
+
 				return true;
 			}
 
 			document.addEventListener('DOMContentLoaded', event => {
 				const events_table = document.getElementById('events');
-				events_table.classList.add('hover','stripe');
+				events_table.classList.add('compact','hover','stripe');
 				const events_table_data = EVENTS.map((e,i) => {
 					let row_data = [
 						e.names['en'],
