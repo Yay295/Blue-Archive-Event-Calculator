@@ -583,7 +583,9 @@
 				}
 			];
 
-			function loadEventData(data) {
+			function loadEventData(event_id) {
+				const data = EVENTS.find(e => e.id === event_id);
+
 				if (data) {
 					console.log('Loading data for event "' + data.names['en'] + '".');
 				} else {
@@ -701,27 +703,21 @@
 			}
 
 			document.addEventListener('DOMContentLoaded', event => {
-				const displayed_events = EVENTS.filter(e => e.items.length > 0)
-				const events_table_data = displayed_events.map((e,i) => {
-					return {
-						'id': e.id,
-						'Name': e.names['en'],
-						'JP Release Date': e.releases['jp'],
-						'Global Release Date': e.releases['global']
-					};
-				});
 				const table = new Tabulator('#events', {
-					autoColumns: true,
-					autoColumnsDefinitions: [{field:'id',visible:false}],
+					columns: [
+						{ field: 'id', visible: false },
+						{ field: 'names.en', title: 'Name' },
+						{ field: 'releases.jp', title: 'JP Release Date' },
+						{ field: 'releases.global', title: 'Global Release Date' }
+					],
 					columnDefaults: {resizable:false},
-					data: events_table_data,
-					initialSort: [{column:'JP Release Date',dir:'desc'}],
+					data: EVENTS.filter(e => e.items.length > 0),
+					initialSort: [{column:'releases.jp',dir:'desc'}],
 					layout: 'fitDataTable'
 				});
 				table.on('rowClick', (e,row) => {
 					try {
-						const event_id = row.getIndex();
-						loadEventData(displayed_events.find(e => e.id === event_id));
+						loadEventData(row.getIndex());
 					} catch (error) {
 						console.error(error);
 					}
