@@ -417,13 +417,11 @@
 				}
 			];
 
-			function loadEventData(index) {
-				const data = EVENTS[index];
-
+			function loadEventData(data) {
 				if (data) {
 					console.log('Loading data for event "' + data.names['en'] + '".');
 				} else {
-					console.error('Event index ' + index + ' is not valid.');
+					console.error('No event data was given.');
 					return false;
 				}
 
@@ -536,7 +534,8 @@
 			}
 
 			document.addEventListener('DOMContentLoaded', event => {
-				const events_table_data = EVENTS.map((e,i) => {
+				const displayed_events = EVENTS.filter(e => e.items.length > 0)
+				const events_table_data = displayed_events.map((e,i) => {
 					return {
 						'id': i,
 						'Name': e.names['en'],
@@ -554,7 +553,7 @@
 				});
 				table.on('rowClick', (e,row) => {
 					try {
-						loadEventData(row.getIndex());
+						loadEventData(displayed_events[row.getIndex()]);
 					} catch (error) {
 						console.error(error);
 					}
