@@ -104,20 +104,65 @@
 			const EVENTS = [
 				{
 					names: {
-						'en': 'Cherry Blossom Festival Commotion!'
+						'en': 'Cherry Blossom Festival Commotion! JP'
 					},
-					releases: {'jp':'2021-02-25','global':'2021-11-29'},
-					items: [],
-					stage_costs: STANDARD_STAGE_COSTS,
-					stage_item_amounts: STAGE_ITEMS_3_AMOUNTS_ZERO
+					releases: {'jp':'2021-02-25'},
+					items: ['Event Points','Kitsune Senbei','Tanuki Okonomiyaki','Sakura Daifuku'],
+					stage_costs: [20,20,20,20,20,20],
+					stage_item_amounts: [
+						[10,21, 0, 0],
+						[10, 0,18, 0],
+						[10, 0, 0,15],
+						[20,42, 0, 0],
+						[20, 0,36, 0],
+						[20, 0, 0,30]
+					]
+				}, {
+					names: {
+						'en': 'Cherry Blossom Festival Commotion! Global'
+					},
+					releases: {'global':'2021-11-29'},
+					items: ['Event Points','Kitsune Senbei','Tanuki Okonomiyaki','Sakura Daifuku'],
+					stage_costs: [20,20,20,20,20,20],
+					stage_item_amounts: [
+						[ 5,14, 0, 0],
+						[ 5, 0,12, 0],
+						[ 5, 0, 0,10],
+						[10,28, 0, 0],
+						[10, 0,24, 0],
+						[10, 0, 0,20]
+					]
+				}, {
+					names: {
+						'en': 'Cherry Blossom Festival Commotion! Rerun'
+					},
+					releases: {'jp':'2022-02-09','global':'2022-09-20'},
+					items: ['Event Points','Kitsune Senbei','Tanuki Okonomiyaki','Sakura Daifuku'],
+					stage_costs: [10,10,10,15,15,15],
+					stage_item_amounts: [
+						[10,14, 0, 0],
+						[10, 0,12, 0],
+						[10, 0, 0,10],
+						[20,28, 0, 0],
+						[20, 0,24, 0],
+						[20, 0, 0,20]
+					]
 				}, {
 					names: {
 						'en': 'A Revolutionary Ivan Kupala: Moustache, Pudding, and Red Winter'
 					},
 					releases: {'jp':'2021-04-29','global':'2022-01-11'},
-					items: [],
-					stage_costs: STANDARD_STAGE_COSTS,
-					stage_item_amounts: STAGE_ITEMS_3_AMOUNTS_ZERO
+					items: ['Cherino Matryoshka','Cheryonka Chocolate','Mustache Crepe'],
+					stage_costs: [10,10,10,15,15,15,15],
+					stage_item_amounts: [
+						[15, 2, 2],
+						[ 0,15, 4],
+						[ 0, 4,15],
+						[21, 6, 6],
+						[12,21, 0],
+						[12, 0,21],
+						[30, 0, 0]
+					]
 				}, {
 					names: {
 						'en': 'Summer Sky\'s Wishlist'
