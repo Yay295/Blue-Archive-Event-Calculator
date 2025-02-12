@@ -750,6 +750,7 @@
 					],
 					columnDefaults: {headerSort:false,resizable:false},
 					data: event_table_data,
+					index: 'stage',
 					layout: 'fitDataTable'
 				});
 
@@ -758,7 +759,7 @@
 					const field_name = cell.getField();
 					if (field_name.startsWith('bonus_multiplier_')) {
 						const data = storage.get(event_id) || Array(num_stages).fill(0).map(() => Array(num_stage_items).fill(0));
-						const row = cell.getRow().getCell('stage').getValue() - 1;
+						const row = cell.getRow().getIndex() - 1;
 						const col = parseInt(field_name.split('_').slice(-1)[0],10);
 						data[row][col] = cell.getValue();
 						storage.set(event_id,data);
