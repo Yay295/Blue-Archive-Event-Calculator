@@ -583,6 +583,35 @@
 				}
 			];
 
+			const dummyStorage = {
+				storage: {},
+				getItem: function(key) {
+					return this.storage[key];
+				},
+				setItem: function(key,value) {
+					this.storage[key] = value;
+				}
+			}
+			const storage = {
+				storage: (() => {
+					try {
+						return window.localStorage || window.sessionStorage || dummyStorage;
+					} catch (e) {
+						try {
+							return window.sessionStorage || dummyStorage;
+						} catch (e) {
+							return dummyStorage;
+						}
+					}
+				})(),
+				get: function(event_id) {
+					return JSON.parse(this.storage.getItem('EVENT_'+event_id));
+				},
+				set: function(event_id,data) {
+					this.storage.setItem('EVENT_'+event_id,JSON.stringify(data));
+				}
+			};
+
 			function loadEventData(event_id) {
 				const data = EVENTS.find(e => e.id === event_id);
 
@@ -593,8 +622,10 @@
 					return false;
 				}
 
-				if (data.stage_costs.length !== data.stage_item_amounts.length) {
-					console.error('The amount of data for this event does not match.\nStage Costs:', data.stage_costs.length, '\nStage Items:', data.stage_item_amounts.length);
+				const num_stages = data.stage_costs.length;
+
+				if (num_stages !== data.stage_item_amounts.length) {
+					console.error('The amount of data for this event does not match.\nStage Costs:', num_stages, '\nStage Items:', data.stage_item_amounts.length);
 					return false;
 				}
 
@@ -605,6 +636,7 @@
 					return false;
 				}
 
+				const stored_bonus_multiplier_data = storage.get(event_id);
 				const event_table_data = data.stage_costs.map((ap_cost,stage_index) => {
 					const stage_item_amounts = data.stage_item_amounts[stage_index];
 					const row_data = {
@@ -614,9 +646,15 @@
 					for (let i = 0; i < stage_item_amounts.length; ++i) {
 						row_data['item_amount_'+i] = stage_item_amounts[i];
 					}
-					// TODO reload saved bonus multipliers
-					for (let i = 0; i < num_stage_items; ++i) {
-						row_data['bonus_multiplier_'+i] = 0;
+					if (stored_bonus_multiplier_data) {
+						const stored_bonus_multiplier_row_data = stored_bonus_multiplier_data[stage_index];
+						for (let i = 0; i < num_stage_items; ++i) {
+							row_data['bonus_multiplier_'+i] = stored_bonus_multiplier_row_data[i];
+						}
+					} else {
+						for (let i = 0; i < num_stage_items; ++i) {
+							row_data['bonus_multiplier_'+i] = 0;
+						}
 					}
 					return row_data;
 				});
@@ -631,7 +669,7 @@
 					const col_cells = cell.getColumn().getCells();
 					// The table loads row-by-row, so we have to wait for all rows to be loaded.
 					// Once all rows have been loaded we then need to set the style for every cell in this column.
-					if (col_cells.length === data.stage_costs.length) {
+					if (col_cells.length === num_stages) {
 						const col_data = col_cells.map(c => [c.getValue(),c.getElement()]);
 						const max_value = col_data.reduce((max,curr_data) => Math.max(max,curr_data[0]), 0);
 						for (let cell_data of col_data) {
@@ -698,6 +736,16 @@
 				});
 
 				table.on('tableBuilt', event => document.body.children[1].scrollIntoView());
+				table.on('cellEdited', cell => {
+					const field_name = cell.getField();
+					if (field_name.startsWith('bonus_multiplier_')) {
+						const data = storage.get(event_id) || Array(num_stages).fill(0).map(() => Array(num_stage_items).fill(0));
+						const row = cell.getRow().getCell('stage').getValue() - 1;
+						const col = parseInt(field_name.split('_').slice(-1)[0],10);
+						data[row][col] = cell.getValue();
+						storage.set(event_id,data);
+					}
+				});
 
 				return true;
 			}
