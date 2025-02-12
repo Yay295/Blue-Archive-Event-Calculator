@@ -590,6 +590,9 @@
 				},
 				setItem: function(key,value) {
 					this.storage[key] = value;
+				},
+				removeItem: function(key) {
+					delete this.storage[key];
 				}
 			}
 			const storage = {
@@ -608,7 +611,11 @@
 					return JSON.parse(this.storage.getItem('EVENT_'+event_id));
 				},
 				set: function(event_id,data) {
-					this.storage.setItem('EVENT_'+event_id,JSON.stringify(data));
+					if (data.every(row => row.every(value => value === 0))) {
+						this.storage.removeItem('EVENT_'+event_id);
+					} else {
+						this.storage.setItem('EVENT_'+event_id,JSON.stringify(data));
+					}
 				}
 			};
 
