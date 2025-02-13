@@ -124,6 +124,15 @@
 
 			const EVENTS = [
 				{
+					id: '0',
+					names: {
+						'en': 'Custom'
+					},
+					releases: {},
+					items: ['A','B','C','D'],
+					stage_costs: STANDARD_STAGE_COSTS_2,
+					stage_item_amounts: STAGE_ITEMS_4_AMOUNTS_ZERO
+				}, {
 					id: '1J',
 					names: {
 						'en': 'Cherry Blossom Festival Commotion! (JP)'
@@ -702,7 +711,14 @@
 					columns: [
 						{ field: 'stage', title: 'Stage', headerSort: true },
 						{ field: 'ap_cost', title: 'AP Cost' },
-						...data.items.map((item,index) => { return {field: 'item_amount_'+index, title: 'Item '+ITEM_NAME_PLACEHOLDERS[index]}; }),
+						...data.items.map((item,index) => { return {
+							field: 'item_amount_' + index,
+							title: 'Item '+ITEM_NAME_PLACEHOLDERS[index],
+							editor: event_id === '0' ? 'number' : false,
+							editorEmptyValue: 0,
+							editorParams: { min: 0, selectContents: true },
+							mutateLink: data.items.flatMap((item,index) => ['bonus_amount_'+index,'total_'+index])
+						}; }),
 						...data.items.map((item,index) => { return {
 							field: 'bonus_multiplier_' + index,
 							title: 'Bonus % ' + ITEM_NAME_PLACEHOLDERS[index],
