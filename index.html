@@ -92,19 +92,34 @@
 				[32, 0, 0]
 			];
 
-			const STAGE_ITEMS_4_AMOUNTS_ZERO = [
-				[0,0,0,0],
-				[0,0,0,0],
-				[0,0,0,0],
-				[0,0,0,0],
-				[0,0,0,0],
-				[0,0,0,0],
-				[0,0,0,0],
-				[0,0,0,0],
-				[0,0,0,0],
-				[0,0,0,0],
-				[0,0,0,0],
-				[0,0,0,0]
+			const STAGE_ITEMS_3_AMOUNTS_1322 = [
+				[13, 2, 2],
+				[ 0,13, 4],
+				[ 0, 4,13],
+				[16, 0, 0],
+				[16, 3, 3],
+				[ 0,16, 6],
+				[ 0, 6,16],
+				[21, 0, 0],
+				[21, 6, 6],
+				[12,21, 0],
+				[12, 0,21],
+				[30, 0, 0]
+			];
+
+			const STAGE_ITEMS_3_AMOUNTS_1233 = [
+				[12, 3, 3],
+				[ 0,14, 4],
+				[ 0, 4,14],
+				[18, 0, 0],
+				[19, 4, 4],
+				[ 0,23, 4],
+				[ 0, 4,23],
+				[27, 0, 0],
+				[28, 4, 4],
+				[ 4,32, 0],
+				[ 4, 0,32],
+				[36, 0, 0]
 			];
 
 			const STAGE_ITEMS_4_AMOUNTS_3620 = [
@@ -122,6 +137,36 @@
 				[20, 4, 4, 4]
 			];
 
+			const STAGE_ITEMS_4_AMOUNTS_21200 = [
+				[ 2,12, 0, 0],
+				[ 2, 0,10, 0],
+				[ 2, 0, 0, 5],
+				[ 5, 3, 2, 1],
+				[ 4,24, 0, 0],
+				[ 4, 0,20, 0],
+				[ 4, 0, 0,16],
+				[11, 5, 4, 3],
+				[ 6,34, 0, 0],
+				[ 6, 0,29, 0],
+				[ 6, 0, 0,24],
+				[16, 7, 6, 5]
+			];
+
+			const STAGE_ITEMS_4_AMOUNTS_4620 = [
+				[ 4, 6, 2, 0],
+				[ 4, 5, 0, 2],
+				[ 4, 0, 2, 5],
+				[16, 1, 1, 1],
+				[ 6,20, 0, 0],
+				[ 6, 0,17, 0],
+				[ 6, 0, 0,15],
+				[24, 3, 3, 3],
+				[ 8,40, 0, 0],
+				[ 8, 0,32, 0],
+				[ 8, 0, 0,27],
+				[32, 6, 6, 6]
+			];
+
 			const EVENTS = [
 				{
 					id: '0',
@@ -131,7 +176,20 @@
 					releases: {},
 					items: ['A','B','C','D'],
 					stage_costs: STANDARD_STAGE_COSTS_2,
-					stage_item_amounts: STAGE_ITEMS_4_AMOUNTS_ZERO
+					stage_item_amounts: [
+						[0,0,0,0],
+						[0,0,0,0],
+						[0,0,0,0],
+						[0,0,0,0],
+						[0,0,0,0],
+						[0,0,0,0],
+						[0,0,0,0],
+						[0,0,0,0],
+						[0,0,0,0],
+						[0,0,0,0],
+						[0,0,0,0],
+						[0,0,0,0]
+					]
 				}, {
 					id: '1J',
 					names: {
@@ -198,11 +256,37 @@
 						[30, 0, 0]
 					]
 				}, {
+					id: '2R',
+					names: {
+						'en': 'A Revolutionary Ivan Kupala: Moustache, Pudding, and Red Winter (Rerun)'
+					},
+					releases: {'jp':'2022-03-09','global':'2022-10-18'},
+					items: ['Cherino Matryoshka','Cheryonka Chocolate','Mustache Crepe'],
+					stage_costs: [10,10,10,15,15,15,15],
+					stage_item_amounts: [
+						[15, 2, 2],
+						[ 0,15, 4],
+						[ 0, 4,15],
+						[21, 6, 6],
+						[12,21, 0],
+						[12, 0,21],
+						[30, 0, 0]
+					]
+				}, {
 					id: '3',
 					names: {
 						'en': 'Summer Sky\'s Wishlist'
 					},
 					releases: {'jp':'2021-06-30','global':'2022-02-22'},
+					items: ['Event Points','Beach Volleyball','Ocean House Meal Ticket','Weird Fireworks'],
+					stage_costs: STANDARD_STAGE_COSTS_1,
+					stage_item_amounts: STAGE_ITEMS_4_AMOUNTS_3620
+				}, {
+					id: '3R',
+					names: {
+						'en': 'Summer Sky\'s Wishlist (Rerun)'
+					},
+					releases: {'jp':'2022-04-20','global':'2022-11-22'},
 					items: ['Event Points','Beach Volleyball','Ocean House Meal Ticket','Weird Fireworks'],
 					stage_costs: STANDARD_STAGE_COSTS_1,
 					stage_item_amounts: STAGE_ITEMS_4_AMOUNTS_3620
@@ -297,6 +381,25 @@
 						[30, 0, 0]
 					]
 				}, {
+					id: '6R',
+					names: {
+						'en': 'Bunny Chasers on Board (Rerun)'
+					},
+					releases: {'jp':'2022-10-12','global':'2023-04-11'},
+					items: ['Chocolate Coin','Rabbit Sticker','Boarding Ticket'],
+					stage_costs: [10,10,10,12,12,12,15,15,15],
+					stage_item_amounts: [
+						[ 0,13, 4],
+						[ 0, 4,13],
+						[13, 2, 2],
+						[ 0,16, 6],
+						[ 0, 6,16],
+						[16, 3, 3],
+						[12,21, 0],
+						[12, 0,21],
+						[30, 0, 0]
+					]
+				}, {
 					id: '7',
 					names: {
 						'en': 'Hatsune Miku Special Live In Kivotos ~ Rehearsal'
@@ -357,20 +460,16 @@
 					releases: {'jp':'2021-12-29','global':'2022-08-09'},
 					items: ['Lucky Bag','Peroro Mochi','Black Tortoise Clan Ema'],
 					stage_costs: STANDARD_STAGE_COSTS_1,
-					stage_item_amounts: [
-						[13, 2, 2],
-						[ 0,13, 4],
-						[ 0, 4,13],
-						[16, 0, 0],
-						[16, 3, 3],
-						[ 0,16, 6],
-						[ 0, 6,16],
-						[21, 0, 0],
-						[21, 6, 6],
-						[12,21, 0],
-						[12, 0,21],
-						[30, 0, 0]
-					]
+					stage_item_amounts: STAGE_ITEMS_3_AMOUNTS_1322
+				}, {
+					id: '9R',
+					names: {
+						'en': 'New Year\'s Rhapsody No. 68 (Rerun)'
+					},
+					releases: {'jp':'2023-03-22','global':'2023-09-26'},
+					items: ['Lucky Bag','Peroro Mochi','Black Tortoise Clan Ema'],
+					stage_costs: STANDARD_STAGE_COSTS_1,
+					stage_item_amounts: STAGE_ITEMS_3_AMOUNTS_1322
 				}, {
 					id: '10',
 					names: {
@@ -379,20 +478,7 @@
 					releases: {'jp':'2022-01-26','global':'2022-09-06'},
 					items: ['Event Points','Written Apologies of a Problem Student','Seized Illegal Candy','Cleanup Day Garbage Bag'],
 					stage_costs: STANDARD_STAGE_COSTS_2,
-					stage_item_amounts: [
-						[ 2,12, 0, 0],
-						[ 2, 0,10, 0],
-						[ 2, 0, 0, 5],
-						[ 5, 3, 2, 1],
-						[ 4,24, 0, 0],
-						[ 4, 0,20, 0],
-						[ 4, 0, 0,16],
-						[11, 5, 4, 3],
-						[ 6,34, 0, 0],
-						[ 6, 0,29, 0],
-						[ 6, 0, 0,24],
-						[16, 7, 6, 5]
-					]
+					stage_item_amounts: STAGE_ITEMS_4_AMOUNTS_21200
 				}, {
 					id: '10R',
 					names: {
@@ -421,27 +507,54 @@
 						'en': 'The Clumsy Sister and the Magician of the Old Library'
 					},
 					releases: {'jp':'2022-02-23','global':'2022-10-04'},
-					items: [],
+					items: ['Event Points','Sisterhood Veil','Trinity Chant Book','Trinity Candelabra'],
 					stage_costs: STANDARD_STAGE_COSTS_2,
-					stage_item_amounts: STAGE_ITEMS_3_AMOUNTS_ZERO
+					stage_item_amounts: STAGE_ITEMS_4_AMOUNTS_21200
+				}, {
+					id: '11R',
+					names: {
+						'en': 'The Clumsy Sister and the Magician of the Old Library (Rerun)'
+					},
+					releases: {'jp':'2023-02-10','global':'2023-08-11'},
+					items: ['Event Points','Sisterhood Veil','Trinity Chant Book','Trinity Candelabra'],
+					stage_costs: STANDARD_STAGE_COSTS_2,
+					stage_item_amounts: STAGE_ITEMS_4_AMOUNTS_21200
 				}, {
 					id: '12',
 					names: {
 						'en': 'An Unconcealed Heart'
 					},
 					releases: {'jp':'2022-04-27','global':'2022-11-29'},
-					items: [],
+					items: ['Mushiqueen Card Pack','Exchange Meeting Flyer','Warakuhime Fan'],
 					stage_costs: STANDARD_STAGE_COSTS_2,
-					stage_item_amounts: STAGE_ITEMS_3_AMOUNTS_ZERO
+					stage_item_amounts: STAGE_ITEMS_3_AMOUNTS_1322
+				}, {
+					id: '12R',
+					names: {
+						'en': 'An Unconcealed Heart (Rerun)'
+					},
+					releases: {'jp':'2023-04-12','global':'2023-10-24'},
+					items: ['Mushiqueen Card Pack','Exchange Meeting Flyer','Warakuhime Fan'],
+					stage_costs: STANDARD_STAGE_COSTS_2,
+					stage_item_amounts: STAGE_ITEMS_3_AMOUNTS_1233
 				}, {
 					id: '13',
 					names: {
 						'en': 'Abydos Resort Restoration Task Force'
 					},
 					releases: {'jp':'2022-06-22','global':'2023-01-17'},
-					items: [],
+					items: ['Material box'],
 					stage_costs: STANDARD_STAGE_COSTS_2,
-					stage_item_amounts: STAGE_ITEMS_3_AMOUNTS_ZERO
+					stage_item_amounts: [20,20,20,20,30,30,30,30,40,40,40,40]
+				}, {
+					id: '13R',
+					names: {
+						'en': 'Abydos Resort Restoration Task Force (Rerun)'
+					},
+					releases: {'jp':'2023-07-17','global':'2024-01-23'},
+					items: ['Material box'],
+					stage_costs: STANDARD_STAGE_COSTS_2,
+					stage_item_amounts: [20,20,20,20,30,30,30,30,40,40,40,40]
 				}, {
 					id: '14',
 					names: {
@@ -449,44 +562,167 @@
 					},
 					releases: {'jp':'2022-07-20','global':'2023-01-31'},
 					items: [],
-					stage_costs: STANDARD_STAGE_COSTS_2,
-					stage_item_amounts: STAGE_ITEMS_3_AMOUNTS_ZERO
+					stage_costs: [],
+					stage_item_amounts: []
+				}, {
+					id: '14R',
+					names: {
+						'en': 'Biz Trip! Momoyodou Beach Shack Franchise Plan (Rerun)'
+					},
+					releases: {'jp':'2023-08-16','global':'2024-02-20'},
+					items: [],
+					stage_costs: [],
+					stage_item_amounts: []
 				}, {
 					id: '15',
 					names: {
 						'en': 'After-School Sweets Story: Sweet, Secrets, and Shootouts'
 					},
 					releases: {'jp':'2022-08-24','global':'2023-02-28'},
-					items: [],
+					items: ['Sweets Coupon','Mint Chocolate Parfait','Macaron'],
 					stage_costs: STANDARD_STAGE_COSTS_2,
-					stage_item_amounts: STAGE_ITEMS_3_AMOUNTS_ZERO
+					stage_item_amounts: [
+						[13, 2, 2],
+						[ 0,13, 4],
+						[ 0, 4,13],
+						[16, 0, 0],
+						[20, 4, 4],
+						[ 0,20, 8],
+						[ 0, 8,20],
+						[26, 0, 0],
+						[28, 8, 8],
+						[16,28, 0],
+						[16, 0,28],
+						[40, 0, 0]
+					]
+				}, {
+					id: '15R',
+					names: {
+						'en': 'After-School Sweets Story: Sweet, Secrets, and Shootouts (Rerun)'
+					},
+					releases: {'jp':'2023-05-10','global':'2023-11-14'},
+					items: ['Sweets Coupon','Mint Chocolate Parfait','Macaron'],
+					stage_costs: STANDARD_STAGE_COSTS_2,
+					stage_item_amounts: [
+						[13, 2, 2],
+						[ 0,13, 4],
+						[ 0, 4,13],
+						[16, 0, 0],
+						[20, 4, 4],
+						[ 0,20, 8],
+						[ 0, 8,20],
+						[26, 0, 0],
+						[28, 8, 8],
+						[16,28, 0],
+						[16, 0,28],
+						[40, 0, 0]
+					]
 				}, {
 					id: '16',
 					names: {
 						'en': 'On Your Mark @ Millennium ~ Kivotos Halo Festival'
 					},
 					releases: {'jp':'2022-09-28','global':'2023-03-28'},
-					items: [],
+					items: ['Event Points','Bean Bag','Millennium\'s Flag','Whistle'],
 					stage_costs: STANDARD_STAGE_COSTS_2,
-					stage_item_amounts: STAGE_ITEMS_3_AMOUNTS_ZERO
+					stage_item_amounts: STAGE_ITEMS_4_AMOUNTS_4620
+				}, {
+					id: '16R',
+					names: {
+						'en': 'On Your Mark @ Millennium ~ Kivotos Halo Festival (Rerun)'
+					},
+					releases: {'jp':'2023-09-06','global':'2024-03-12'},
+					items: ['Event Points','Bean Bag','Millennium\'s Flag','Whistle'],
+					stage_costs: STANDARD_STAGE_COSTS_2,
+					stage_item_amounts: STAGE_ITEMS_4_AMOUNTS_4620
 				}, {
 					id: '17',
 					names: {
 						'en': 'Get Set, Go! Kivotos Halo Festival'
 					},
 					releases: {'jp':'2022-10-26','global':'2023-04-25'},
-					items: [],
+					items: ['Sports Drink','Relay Baton','Anpan','Information Pamphlet'],
 					stage_costs: STANDARD_STAGE_COSTS_2,
-					stage_item_amounts: STAGE_ITEMS_3_AMOUNTS_ZERO
+					stage_item_amounts: [
+						[ 6, 6, 6, 0],
+						[ 6, 0, 6, 6],
+						[ 6, 6, 0, 6],
+						[10, 2, 2, 2],
+						[ 9,12, 6, 0],
+						[ 9, 0,12, 6],
+						[ 9, 6, 0,12],
+						[18, 2, 2, 2],
+						[ 0,36, 0, 0],
+						[ 0, 0,36, 0],
+						[ 0, 0, 0,36],
+						[32, 0, 0, 0]
+					]
+				}, {
+					id: '17R',
+					names: {
+						'en': 'Get Set, Go! Kivotos Halo Festival (Rerun)'
+					},
+					releases: {'jp':'2023-09-15','global':'2024-03-21'},
+					items: ['Sports Drink','Relay Baton','Anpan','Information Pamphlet'],
+					stage_costs: STANDARD_STAGE_COSTS_2,
+					stage_item_amounts: [
+						[ 6, 6, 6, 0],
+						[ 6, 0, 6, 6],
+						[ 6, 6, 0, 6],
+						[10, 2, 2, 2],
+						[ 9,12, 6, 0],
+						[ 9, 0,12, 6],
+						[ 9, 6, 0,12],
+						[18, 2, 2, 2],
+						[ 0,36, 0, 0],
+						[ 0, 0,36, 0],
+						[ 0, 0, 0,36],
+						[32, 0, 0, 0]
+					]
 				}, {
 					id: '18',
 					names: {
 						'en': 'The Cathedral\'s Merry Christmas: Remedial Knights\' Gift'
 					},
 					releases: {'jp':'2022-12-14','global':'2023-06-13'},
-					items: [],
+					items: ['Christmas Present','Christmas Socks','Candy Cane'],
 					stage_costs: STANDARD_STAGE_COSTS_2,
-					stage_item_amounts: STAGE_ITEMS_3_AMOUNTS_ZERO
+					stage_item_amounts: [
+						[13, 2, 2],
+						[ 0,13, 4],
+						[ 0, 4,13],
+						[16, 0, 0],
+						[20, 4, 4],
+						[ 0,20, 8],
+						[ 0, 8,20],
+						[26, 0, 0],
+						[28, 8, 8],
+						[16,28, 0],
+						[16, 0,28],
+						[40, 0, 0]
+					]
+				}, {
+					id: '18R',
+					names: {
+						'en': 'The Cathedral\'s Merry Christmas: Remedial Knights\' Gift (Rerun)'
+					},
+					releases: {'jp':'2024-02-07','global':'2024-08-06'},
+					items: ['Christmas Present','Christmas Socks','Candy Cane'],
+					stage_costs: STANDARD_STAGE_COSTS_2,
+					stage_item_amounts: [
+						[13, 2, 2],
+						[ 0,13, 4],
+						[ 0, 4,13],
+						[16, 0, 0],
+						[20, 4, 4],
+						[ 0,20, 8],
+						[ 0, 8,20],
+						[26, 0, 0],
+						[28, 8, 8],
+						[16,28, 0],
+						[16, 0,28],
+						[40, 0, 0]
+					]
 				}, {
 					id: '19',
 					names: {
@@ -495,16 +731,51 @@
 					releases: {'jp':'2022-12-28','global':'2023-06-27'},
 					items: ['Event Points','Red & White Fish Cakes','Snapper'],
 					stage_costs: STANDARD_STAGE_COSTS_2,
-					stage_item_amounts: STAGE_ITEMS_3_AMOUNTS_ZERO
+					stage_item_amounts: [
+						[ 2, 4, 4],
+						[ 2, 8, 0],
+						[ 2, 0, 8],
+						[ 8, 0, 0],
+						[ 4,10,10],
+						[ 4,15, 0],
+						[ 0, 0,15],
+						[15, 0, 0],
+						[ 6,18,18],
+						[ 6,30, 0],
+						[ 6, 0,30],
+						[30, 0, 0]
+					]
+				}, {
+					id: '19R',
+					names: {
+						'en': 'New Year\'s Aperitif: One-and-Done Match'
+					},
+					releases: {'jp':'2024-03-06','global':'2024-09-03'},
+					items: ['Event Points','Red & White Fish Cakes','Snapper'],
+					stage_costs: STANDARD_STAGE_COSTS_2,
+					stage_item_amounts: [
+						[ 2, 4, 4],
+						[ 2, 8, 0],
+						[ 2, 0, 8],
+						[ 8, 0, 0],
+						[ 4,10,10],
+						[ 4,15, 0],
+						[ 0, 0,15],
+						[15, 0, 0],
+						[ 6,18,18],
+						[ 6,30, 0],
+						[ 6, 0,30],
+						[30, 0, 0]
+					]
 				}, {
 					id: '20',
 					names: {
 						'en': 'Restoration Project: D.U. Shiratori City'
 					},
 					releases: {'jp':'2023-03-12','global':'2023-09-09'},
-					items: [],
+					items: ['Event Points','GSC Safety Helmet','Financial Statement','Mentai Potato Chips'],
 					stage_costs: STANDARD_STAGE_COSTS_2,
-					stage_item_amounts: STAGE_ITEMS_3_AMOUNTS_ZERO
+					stage_item_amounts: STAGE_ITEMS_4_AMOUNTS_4620
 				}, {
 					id: '21',
 					names: {
@@ -513,7 +784,42 @@
 					releases: {'jp':'2023-04-26','global':'2023-10-31'},
 					items: ['Immaculate Maid Hairband','Makeup Palette','Old Mansion Invitation'],
 					stage_costs: STANDARD_STAGE_COSTS_2,
-					stage_item_amounts: STAGE_ITEMS_3_AMOUNTS_ZERO
+					stage_item_amounts: [
+						[ 2, 2,14],
+						[14, 4, 0],
+						[ 4,14, 0],
+						[ 0, 0,18],
+						[ 4, 3,20],
+						[20, 7, 0],
+						[ 7,20, 0],
+						[27, 0, 0],
+						[ 6, 6,24],
+						[36, 0, 0],
+						[ 0,36, 0],
+						[ 0, 0,36]
+					]
+				}, {
+					id: '21R',
+					names: {
+						'en': 'Alabaster Calling Card: Mansion Masquerade and the Essence of Beauty (Rerun)'
+					},
+					releases: {'jp':'2024-05-22','global':'2024-11-19'},
+					items: ['Immaculate Maid Hairband','Makeup Palette','Old Mansion Invitation'],
+					stage_costs: STANDARD_STAGE_COSTS_2,
+					stage_item_amounts: [
+						[ 2, 2,14],
+						[14, 4, 0],
+						[ 4,14, 0],
+						[ 0, 0,18],
+						[ 4, 3,20],
+						[20, 7, 0],
+						[ 7,20, 0],
+						[27, 0, 0],
+						[ 6, 6,24],
+						[36, 0, 0],
+						[ 0,36, 0],
+						[ 0, 0,36]
+					]
 				}, {
 					id: '22',
 					names: {
@@ -522,7 +828,16 @@
 					releases: {'jp':'2023-05-24','global':'2023-11-28'},
 					items: ['Card Bundle','Meal Ticket','Genryumon Badge'],
 					stage_costs: STANDARD_STAGE_COSTS_2,
-					stage_item_amounts: STAGE_ITEMS_3_AMOUNTS_ZERO
+					stage_item_amounts: STAGE_ITEMS_3_AMOUNTS_1233
+				}, {
+					id: '22R',
+					names: {
+						'en': 'Dragon & Tortoise, Working Together for a Better Future (Rerun)'
+					},
+					releases: {'jp':'2024-05-15','global':'2024-11-12'},
+					items: ['Card Bundle','Meal Ticket','Genryumon Badge'],
+					stage_costs: STANDARD_STAGE_COSTS_2,
+					stage_item_amounts: STAGE_ITEMS_3_AMOUNTS_1233
 				}, {
 					id: '23',
 					names: {
@@ -531,16 +846,86 @@
 					releases: {'jp':'2023-06-21','global':'2023-12-26'},
 					items: ['Frozen Shrimp','Pebble','Seashell','Dried Starfish'],
 					stage_costs: STANDARD_STAGE_COSTS_2,
-					stage_item_amounts: STAGE_ITEMS_4_AMOUNTS_ZERO
+					stage_item_amounts: [
+						[ 6, 6, 6, 0],
+						[ 6, 0, 6, 6],
+						[ 6, 6, 0, 6],
+						[12, 2, 2, 2],
+						[ 9,12, 6, 0],
+						[ 9, 0,12, 6],
+						[ 9, 6, 0,12],
+						[21, 2, 2, 2],
+						[ 0,36, 0, 0],
+						[ 0, 0,36, 0],
+						[ 0, 0, 0,36],
+						[36, 0, 0, 0]
+					]
+				}, {
+					id: '23R',
+					names: {
+						'en': 'Special Summer Mission! RABBIT Squad and the Mystery of the Missing Shrimp (Rerun)'
+					},
+					releases: {'jp':'2024-07-10','global':'2025-01-07'},
+					items: ['Frozen Shrimp','Pebble','Seashell','Dried Starfish'],
+					stage_costs: STANDARD_STAGE_COSTS_2,
+					stage_item_amounts: [
+						[ 6, 6, 6, 0],
+						[ 6, 0, 6, 6],
+						[ 6, 6, 0, 6],
+						[12, 2, 2, 2],
+						[ 9,12, 6, 0],
+						[ 9, 0,12, 6],
+						[ 9, 6, 0,12],
+						[21, 2, 2, 2],
+						[ 0,36, 0, 0],
+						[ 0, 0,36, 0],
+						[ 0, 0, 0,36],
+						[36, 0, 0, 0]
+					]
 				}, {
 					id: '24',
 					names: {
 						'en': 'Trinity Extracurriculars: In Search of Hidden Ruins'
 					},
 					releases: {'jp':'2023-07-24','global':'2024-01-30'},
-					items: [],
+					items: ['Event Points','Parchment Piece','Lemon','Old Key'],
 					stage_costs: STANDARD_STAGE_COSTS_2,
-					stage_item_amounts: STAGE_ITEMS_3_AMOUNTS_ZERO
+					stage_item_amounts: [
+						[ 3,17, 0, 0],
+						[ 3, 0,17, 0],
+						[ 3, 0, 0,17],
+						[20, 0, 0, 0],
+						[ 6,24, 0, 0],
+						[ 6, 0,24, 0],
+						[ 6, 0, 0,24],
+						[30, 0, 0, 0],
+						[ 9,31, 0, 0],
+						[ 9, 0,31, 0],
+						[ 9, 0, 0,31],
+						[40, 0, 0, 0]
+					]
+				}, {
+					id: '24R',
+					names: {
+						'en': 'Trinity Extracurriculars: In Search of Hidden Ruins (Rerun)'
+					},
+					releases: {'jp':'2024-09-04','global':'2025-03-04'},
+					items: ['Event Points','Parchment Piece','Lemon','Old Key'],
+					stage_costs: STANDARD_STAGE_COSTS_2,
+					stage_item_amounts: [
+						[ 3,17, 0, 0],
+						[ 3, 0,17, 0],
+						[ 3, 0, 0,17],
+						[20, 0, 0, 0],
+						[ 6,24, 0, 0],
+						[ 6, 0,24, 0],
+						[ 6, 0, 0,24],
+						[30, 0, 0, 0],
+						[ 9,31, 0, 0],
+						[ 9, 0,31, 0],
+						[ 9, 0, 0,31],
+						[40, 0, 0, 0]
+					]
 				}, {
 					id: '25',
 					names: {
