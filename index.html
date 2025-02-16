@@ -1146,7 +1146,7 @@
 					return false;
 				}
 
-				const stored_bonus_multiplier_data = storage.get(event_id);
+				const stored_bonus_percentage_data = storage.get(event_id);
 				const event_table_data = data.stage_costs.map((ap_cost,stage_index) => {
 					const stage_item_amounts = data.stage_item_amounts[stage_index];
 					const row_data = {
@@ -1156,14 +1156,14 @@
 					for (let i = 0; i < stage_item_amounts.length; ++i) {
 						row_data['item_amount_'+i] = stage_item_amounts[i];
 					}
-					if (stored_bonus_multiplier_data) {
-						const stored_bonus_multiplier_row_data = stored_bonus_multiplier_data[stage_index];
+					if (stored_bonus_percentage_data) {
+						const stored_bonus_percentage_row_data = stored_bonus_percentage_data[stage_index];
 						for (let i = 0; i < num_stage_items; ++i) {
-							row_data['bonus_multiplier_'+i] = stored_bonus_multiplier_row_data[i];
+							row_data['bonus_percentage_'+i] = stored_bonus_percentage_row_data[i];
 						}
 					} else {
 						for (let i = 0; i < num_stage_items; ++i) {
-							row_data['bonus_multiplier_'+i] = 0;
+							row_data['bonus_percentage_'+i] = 0;
 						}
 					}
 					return row_data;
@@ -1201,7 +1201,7 @@
 							mutateLink: data.items.flatMap((item,index) => ['bonus_amount_'+index,'total_'+index])
 						}; }),
 						...data.items.map((item,index) => { return {
-							field: 'bonus_multiplier_' + index,
+							field: 'bonus_percentage_' + index,
 							title: 'Bonus % ' + ITEM_NAME_PLACEHOLDERS[index],
 							editor: 'number',
 							editorEmptyValue: 0,
@@ -1213,7 +1213,7 @@
 						...data.items.map((item,index) => { return {
 							field: 'bonus_amount_' + index,
 							title: 'Bonus ' + ITEM_NAME_PLACEHOLDERS[index],
-							mutator: (value,data) => Math.ceil(data['item_amount_'+index] * data['bonus_multiplier_'+index] / 100),
+							mutator: (value,data) => Math.ceil(data['item_amount_'+index] * data['bonus_percentage_'+index] / 100),
 							mutateLink: data.items.map((item,index) => 'total_'+index)
 						}; }),
 						...data.items.map((item,index) => { return {
@@ -1258,7 +1258,7 @@
 				table.on('tableBuilt', event => document.body.children[1].scrollIntoView());
 				table.on('cellEdited', cell => {
 					const field_name = cell.getField();
-					if (field_name.startsWith('bonus_multiplier_')) {
+					if (field_name.startsWith('bonus_percentage_')) {
 						const data = storage.get(event_id) || Array(num_stages).fill(0).map(() => Array(num_stage_items).fill(0));
 						const row = cell.getRow().getIndex() - 1;
 						const col = parseInt(field_name.split('_').slice(-1)[0],10);
