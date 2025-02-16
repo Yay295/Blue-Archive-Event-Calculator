@@ -1198,7 +1198,7 @@
 							editor: event_id === '0' ? 'number' : false,
 							editorEmptyValue: 0,
 							editorParams: { min: 0, selectContents: true },
-							mutateLink: data.items.flatMap((item,index) => ['bonus_amount_'+index,'total_'+index])
+							mutateLink: data.items.map((item,index) => index,'total_'+index)
 						}; }),
 						...data.items.map((item,index) => { return {
 							field: 'bonus_multiplier_' + index,
@@ -1208,18 +1208,23 @@
 							editorParams: { min: 0, step: 5, max: 100, selectContents: true },
 							formatter: 'money',
 							formatterParams: { symbol: '%', symbolAfter: true, precision: 0 },
-							mutateLink: data.items.map((item,index) => 'bonus_amount_'+index)
-						}; }),
-						...data.items.map((item,index) => { return {
-							field: 'bonus_amount_' + index,
-							title: 'Bonus ' + ITEM_NAME_PLACEHOLDERS[index],
-							mutator: (value,data) => Math.ceil(data['item_amount_'+index] * data['bonus_multiplier_'+index] / 100),
 							mutateLink: data.items.map((item,index) => 'total_'+index)
 						}; }),
 						...data.items.map((item,index) => { return {
 							field: 'total_' + index,
 							title: 'Total ' + ITEM_NAME_PLACEHOLDERS[index],
-							mutator: (value,data) => data['item_amount_'+index] + data['bonus_amount_'+index],
+							formatter: (cell,params) => {
+								const item_amount = cell.getRow().getCell('item_amount_'+index).getValue();
+								const bonus_percentage = cell.getRow().getCell('bonus_multiplier_'+index).getValue();
+								const math_left = `<mn>${item_amount}</mn><mo>+</mo><mo>&lceil;</mo><mn>${item_amount}</mn><mo>&#xd7;</mo><mn>${bonus_percentage}</mn><mo>%</mo><mo>&rceil;</mo>`;
+								const math_right = `<mn>${cell.getValue()}</mn>`;
+								return `<math>${math_left}<mo>=</mo>${math_right}</math>`;
+							},
+							mutator: (value,data) => {
+								const item_amount = data['item_amount_'+index];
+								const bonus_percentage = data['bonus_multiplier_'+index];
+								return item_amount + Math.ceil(item_amount * bonus_percentage / 100);
+							},
 							mutateLink: ['sum', ...data.items.map((item,index) => 'total_per_ap_'+index)]
 						}; }),
 						{
