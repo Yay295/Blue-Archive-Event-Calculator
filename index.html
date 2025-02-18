@@ -1218,6 +1218,8 @@
 				}
 			};
 
+			let DATA_TABLE = null;
+
 			function loadEventData(event_id) {
 				const data = EVENTS.find(e => e.id === event_id);
 
@@ -1270,7 +1272,6 @@
 				const event_data_subtitle = document.getElementById('event_data_subtitle');
 				event_data_subtitle.innerText = data.items.map((item,index) => item + ' = ' + ITEM_NAME_PLACEHOLDERS[index]).join(', ');
 
-				const event_data_table = document.getElementById('event_data');
 				function totalPerAPFormatter(cell,params) {
 					const col_cells = cell.getColumn().getCells();
 					// The table loads row-by-row, so we have to wait for all rows to be loaded.
@@ -1284,7 +1285,17 @@
 					}
 					return cell.getValue().toFixed(2);
 				}
-				const table = new Tabulator(event_data_table, {
+
+				// Destroy any existing table first.
+				if (DATA_TABLE) {
+					// Copy and restore the HTML to prevent the table from flashing
+					// in between this table being removed and the new table being added.
+					const html = DATA_TABLE.element.outerHTML;
+					DATA_TABLE.destroy();
+					DATA_TABLE.element.outerHTML = html;
+				}
+
+				DATA_TABLE = new Tabulator('#event_data', {
 					columns: [
 						{ field: 'stage', title: 'Stage', headerSort: true },
 						{ field: 'ap_cost', title: 'AP Cost' },
@@ -1351,8 +1362,8 @@
 					layout: 'fitDataTable'
 				});
 
-				table.on('tableBuilt', event => document.body.children[1].scrollIntoView());
-				table.on('cellEdited', cell => {
+				DATA_TABLE.on('tableBuilt', event => document.body.children[1].scrollIntoView());
+				DATA_TABLE.on('cellEdited', cell => {
 					const field_name = cell.getField();
 					if (field_name.startsWith('bonus_percentage_')) {
 						const data = storage.get(event_id) || Array(num_stages).fill(0).map(() => Array(num_stage_items).fill(0));
