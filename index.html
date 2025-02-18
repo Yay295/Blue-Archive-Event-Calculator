@@ -1415,12 +1415,17 @@
 					layout: 'fitDataTable',
 					persistence: {headerFilter:true,sort:true}
 				});
-				// After the table has been built, set the min width of each column to its current width
-				// so that the table won't shrink when filtering the data.
-				table.on('tableBuilt', event => {
+				// Set the min width of each column to its current width so that the table won't shrink when filtering the data.
+				function fixMinWidth() {
 					// I don't know why setMinWidth() is available on Column but not ColumnComponent.
-					table.getColumns().map(column => column._column).forEach(column => column.setMinWidth(column.getWidth()));
-				});
+					table.getColumns().map(column => column._column).forEach(column => {
+						// The actual width is 1px wider than what it's set to due to the border of the element.
+						column.setMinWidth(column.getWidth()-1);
+					});
+				}
+				// Persisted filters are applied before the table is built, so the initial size of the table can be smaller than its full size.
+				table.on('dataFiltered',fixMinWidth);
+				table.on('tableBuilt',fixMinWidth);
 				table.on('rowClick', (e,row) => {
 					try {
 						loadEventData(row.getIndex());
