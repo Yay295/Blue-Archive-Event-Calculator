@@ -17,6 +17,9 @@
 			body {
 				text-align: center;
 			}
+			p:has(~ div:not(.tabulator)) {
+				display: none;
+			}
 			.tabulator-editable {
 				background-color: orangered;
 				color: white;
@@ -1365,7 +1368,7 @@
 				DATA_TABLE.on('tableBuilt', event => document.body.children[1].scrollIntoView());
 				DATA_TABLE.on('cellEdited', cell => {
 					const field_name = cell.getField();
-					if (field_name.startsWith('bonus_percentage_')) {
+					if (!document.getElementById('preview_best').checked && field_name.startsWith('bonus_percentage_')) {
 						const data = storage.get(event_id) || Array(num_stages).fill(0).map(() => Array(num_stage_items).fill(0));
 						const row = cell.getRow().getIndex() - 1;
 						const col = parseInt(field_name.split('_').slice(-1)[0],10);
@@ -1426,11 +1429,53 @@
 				// Persisted filters are applied before the table is built, so the initial size of the table can be smaller than its full size.
 				table.on('dataFiltered',fixMinWidth);
 				table.on('tableBuilt',fixMinWidth);
+
+				const preview_best_checkbox = document.getElementById('preview_best');
+
 				table.on('rowClick', (e,row) => {
 					try {
+						preview_best_checkbox.checked = false;
 						loadEventData(row.getIndex());
 					} catch (error) {
 						console.error(error);
+					}
+				});
+
+				preview_best_checkbox.addEventListener('change', event => {
+					if (DATA_TABLE) {
+						const bonus_percentage_columns = DATA_TABLE.getColumns().filter(column => column.getField().startsWith('bonus_percentage_'));
+						if (preview_best_checkbox.checked) {
+							for (const column of bonus_percentage_columns) {
+								const col_cells = column.getCells();
+								const col_max_value = col_cells.reduce((max,cell) => Math.max(max,cell.getValue()), 0);
+								for (const cell of col_cells) {
+									cell.setValue(col_max_value);
+								}
+								// Updating the column definition is asynchronous and this function returns a Promise.
+								// It also recreates the column, losing the cell's initial and old values.
+								const col_cell_old_values = col_cells.map(cell => cell.getOldValue());
+								column.updateDefinition({editor:false}).then(new_column => {
+									// Restore the cell's old values.
+									const col_cells = new_column.getCells();
+									for (let i = 0; i < col_cells.length; ++i) {
+										col_cells[i]._cell.oldValue = col_cell_old_values[i];
+									}
+								});
+							}
+						} else {
+							for (const column of bonus_percentage_columns) {
+								for (const cell of column.getCells()) {
+									// `cell.restoreOldValue()` doesn't trigger mutators.
+									cell.setValue(cell.getOldValue());
+								}
+							}
+							// Updating the column definitions needs to happen after all of the values have been restored.
+							// For some reason updating the first column seems to clear the old cell data for the other columns.
+							for (const column of bonus_percentage_columns) {
+								// Updating the column definition is asynchronous and this function returns a Promise.
+								column.updateDefinition({editor:'number'});
+							}
+						}
 					}
 				});
 			});
@@ -1444,6 +1489,10 @@
 		<section>
 			<h2 id="event_data_title"></h2>
 			<p id="event_data_subtitle"></p>
+			<p>
+				<input type="checkbox" id="preview_best" autocomplete="off"/>
+				<label for="preview_best" title="Check this box to see what it would look like if you got your current best bonus percentages on every stage.">Preview Your Best</label>
+			</p>
 			<div id="event_data"></div>
 		</section>
 	</body>
