@@ -1409,10 +1409,16 @@
 						{ field: 'releases.jp', title: 'JP Release Date', sorter: eventSorter },
 						{ field: 'releases.global', title: 'Global Release Date', sorter: eventSorter }
 					],
-					columnDefaults: {resizable:false},
+					columnDefaults: {headerFilter:true,resizable:false},
 					data: EVENTS.filter(e => e.items.length > 0),
 					initialSort: [{column:'releases.jp',dir:'desc'}],
 					layout: 'fitDataTable'
+				});
+				// After the table has been built, set the min width of each column to its current width
+				// so that the table won't shrink when filtering the data.
+				table.on('tableBuilt', event => {
+					// I don't know why setMinWidth() is available on Column but not ColumnComponent.
+					table.getColumns().map(column => column._column).forEach(column => column.setMinWidth(column.getWidth()));
 				});
 				table.on('rowClick', (e,row) => {
 					try {
